@@ -58,9 +58,9 @@ pipeline {
 	                folderName: "${UIPATH_ORCH_FOLDER_NAME}",
 	                environments: 'INT',
 	                //credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey']
-	                credentials: Token(accountName: "${UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'APIUserKey'),
+	                credentials: Token(accountName: "${UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'h4yoQZhNgSaxHt0i9pws99cLxEOXBnmpajVfhHzbeB1UR'),
 					traceLevel: 'None',
-					entryPointPaths: 'Main.xaml'
+					entryPointPaths: 'Login.xaml'
 	
 
 					)
@@ -74,7 +74,7 @@ pipeline {
 	            steps {
 	               echo 'Testing the workflow...'
 					UiPathTest (
-					  testTarget: [$class: 'TestSetEntry', testSet: "AnnounceFavouriteSinger_Tests"],
+					  testTarget: [$class: 'TestSetEntry', testSet: "AcmeTest"],
 					  orchestratorAddress: "${UIPATH_ORCH_URL}",
 					  orchestratorTenant: "${UIPATH_ORCH_TENANT_NAME}",
 					  folderName: "${UIPATH_ORCH_FOLDER_NAME}",
@@ -82,7 +82,7 @@ pipeline {
 					  traceLevel: 'None',
 					  testResultsOutputPath: "result.xml",
 					  //credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: "credentialsId"]
-					  credentials: Token(accountName: "${UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'APIUserKey'),
+					  credentials: Token(accountName: "${UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'h4yoQZhNgSaxHt0i9pws99cLxEOXBnmpajVfhHzbeB1UR'),
 					  parametersFilePath: ''
 					)
 	            }
