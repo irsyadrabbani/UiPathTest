@@ -35,15 +35,17 @@ pipeline {
 	         // Building Tests
 	        stage('Build Tests') {
 	            steps {
-	                echo "Building package with ${WORKSPACE}"
-	                UiPathPack (
-	                      outputPath: "Output\\Tests\${env.BUILD_NUMBER}",
-						  outputType: 'Tests',
-	                      projectJsonPath: "project.json",
-	                      version: [$class: 'ManualVersionEntry', version: "${MAJOR}.${MINOR}.${env.BUILD_NUMBER}"],
-	                      useOrchestrator: false,
-						  traceLevel: 'None'
-						)
+					script {
+						echo "Building package with ${WORKSPACE}"
+						UiPathPack (
+							  outputPath: "Output\\Tests\${env.BUILD_NUMBER}",
+							  outputType: 'Tests',
+							  projectJsonPath: "project.json",
+							  version: [$class: 'ManualVersionEntry', version: "${MAJOR}.${MINOR}.${env.BUILD_NUMBER}"],
+							  useOrchestrator: false,
+							  traceLevel: 'None'
+							)
+					
 	            }
 	        }
 			
