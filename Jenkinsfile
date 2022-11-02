@@ -20,13 +20,14 @@ pipeline {
 	        // Printing Basic Information
 	        stage('Preparing'){
 	            steps {
+				script	{
 	                echo "Jenkins Home ${env.JENKINS_HOME}"
 	                echo "Jenkins URL ${env.JENKINS_URL}"
 	                echo "Jenkins JOB Number ${env.BUILD_NUMBER}"
 	                echo "Jenkins JOB Name ${env.JOB_NAME}"
 	                echo "GitHub BranchName ${env.BRANCH_NAME}"
 	                checkout scm
-	
+					}
 
 	            }
 	        }
@@ -45,13 +46,14 @@ pipeline {
 							  useOrchestrator: false,
 							  traceLevel: 'None'
 							)
-					
+					}
 	            }
 	        }
 			
 	         // Deploy Stages
 	        stage('Deploy Tests') {
 	            steps {
+				script {
 	                echo "Deploying ${BRANCH_NAME} to orchestrator"
 	                UiPathDeploy (
 	                packagePath: "Output\\Tests\${env.BUILD_NUMBER}",
@@ -63,9 +65,10 @@ pipeline {
 	                credentials: Token(accountName: "${UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'ddwWaqqBhwHGUJLUocDG3-JO2sQ7SC8g5Ov2J-zTMef-_'),
 					traceLevel: 'None',
 					entryPointPaths: 'Login.xaml'
-	
+					
 
-					)
+						)
+					}
 	            }
 			
 			}
@@ -74,19 +77,21 @@ pipeline {
 	         // Test Stages
 	        stage('Perform Tests') {
 	            steps {
-	               echo 'Testing the workflow...'
-					UiPathTest (
-					  testTarget: [$class: 'TestSetEntry', testSet: "AcmeTest"],
-					  orchestratorAddress: "${UIPATH_ORCH_URL}",
-					  orchestratorTenant: "${UIPATH_ORCH_TENANT_NAME}",
-					  folderName: "${UIPATH_ORCH_FOLDER_NAME}",
-					  timeout: 10000,
-					  traceLevel: 'None',
-					  testResultsOutputPath: "result.xml",
-					  //credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: "credentialsId"]
-					  credentials: Token(accountName: "${UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'ddwWaqqBhwHGUJLUocDG3-JO2sQ7SC8g5Ov2J-zTMef-_'),
-					  parametersFilePath: ''
-					)
+					script {
+					   echo 'Testing the workflow...'
+						UiPathTest (
+						  testTarget: [$class: 'TestSetEntry', testSet: "AcmeTest"],
+						  orchestratorAddress: "${UIPATH_ORCH_URL}",
+						  orchestratorTenant: "${UIPATH_ORCH_TENANT_NAME}",
+						  folderName: "${UIPATH_ORCH_FOLDER_NAME}",
+						  timeout: 10000,
+						  traceLevel: 'None',
+						  testResultsOutputPath: "result.xml",
+						  //credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: "credentialsId"]
+						  credentials: Token(accountName: "${UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'ddwWaqqBhwHGUJLUocDG3-JO2sQ7SC8g5Ov2J-zTMef-_'),
+						  parametersFilePath: ''
+						)
+					}
 	            }
 			}
 				
@@ -98,6 +103,7 @@ pipeline {
 						}
 				}
 				steps {
+				script {
 					echo "Building package with ${WORKSPACE}"
 					UiPathPack (
 						  outputPath: "Output\\${env.BUILD_NUMBER}",
@@ -107,6 +113,7 @@ pipeline {
 						  traceLevel: 'None'
 						)
 					}
+				}
 	        }			
 			
 	         // Deploy to Production Step
@@ -117,18 +124,20 @@ pipeline {
 						}
 				}
 				steps {
-	                echo 'Deploying process to orchestrator...'
-	                UiPathDeploy (
-	                packagePath: "Output\\${env.BUILD_NUMBER}",
-	                orchestratorAddress: "${UIPATH_ORCH_URL}",
-	                orchestratorTenant: "${UIPATH_ORCH_TENANT_NAME}",
-	                folderName: "${UIPATH_ORCH_FOLDER_NAME}",
-	                environments: 'INT',
-	                //credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey']
-	                credentials: Token(accountName: "${UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'ddwWaqqBhwHGUJLUocDG3-JO2sQ7SC8g5Ov2J-zTMef-_'),
-					traceLevel: 'None',
-					entryPointPaths: 'Main.xaml'
-					)
+						script {
+						echo 'Deploying process to orchestrator...'
+						UiPathDeploy (
+						packagePath: "Output\\${env.BUILD_NUMBER}",
+						orchestratorAddress: "${UIPATH_ORCH_URL}",
+						orchestratorTenant: "${UIPATH_ORCH_TENANT_NAME}",
+						folderName: "${UIPATH_ORCH_FOLDER_NAME}",
+						environments: 'INT',
+						//credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey']
+						credentials: Token(accountName: "${UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'ddwWaqqBhwHGUJLUocDG3-JO2sQ7SC8g5Ov2J-zTMef-_'),
+						traceLevel: 'None',
+						entryPointPaths: 'Main.xaml'
+						)
+					}
 				}   
 			}	
 		
