@@ -7,7 +7,7 @@ pipeline {
 	        MAJOR = '1'
 	        MINOR = '1'
 	        //Orchestrator Services
-	        UIPATH_ORCH_URL = "https://cloud.uipath.com"
+	        UIPATH_ORCH_URL = "https://cloud.uipath.com/"
 	        UIPATH_ORCH_LOGICAL_NAME = "indocwtbqaat"
 	        UIPATH_ORCH_TENANT_NAME = "DefaultTenant"
 	        UIPATH_ORCH_FOLDER_NAME = "Shared"
@@ -62,11 +62,9 @@ pipeline {
 	                folderName: "${UIPATH_ORCH_FOLDER_NAME}",
 	                environments: 'INT',
 	                //credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey']
-	                credentials: Token(accountName: "${UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'CHutUoKnVwFcka2O3bTMNltuW4RHo_vsGV8QcPVpz6JHL'),
+	                credentials: Token(accountName: "${UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'APIUserKey'),
 					traceLevel: 'None',
 					entryPointPaths: 'Login.xaml'
-					
-
 						)
 					}
 	            }
@@ -87,8 +85,8 @@ pipeline {
 						  timeout: 10000,
 						  traceLevel: 'None',
 						  testResultsOutputPath: "result.xml",
-						  //credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: "credentialsId"]
-						  credentials: Token(accountName: "${UIPATH_ORCH_LOGICAL_NAME}", credentialsId: "CHutUoKnVwFcka2O3bTMNltuW4RHo_vsGV8QcPVpz6JHL"),
+						  //credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey']
+						  credentials: Token(accountName: "${UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'APIUserKey'),
 						  parametersFilePath: ''
 						)
 					}
@@ -133,9 +131,9 @@ pipeline {
 						folderName: "${UIPATH_ORCH_FOLDER_NAME}",
 						environments: 'INT',
 						//credentials: [$class: 'UserPassAuthenticationEntry', credentialsId: 'APIUserKey']
-						credentials: Token(accountName: "${UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'CHutUoKnVwFcka2O3bTMNltuW4RHo_vsGV8QcPVpz6JHL'),
+						credentials: Token(accountName: "${UIPATH_ORCH_LOGICAL_NAME}", credentialsId: 'APIUserKey'),
 						traceLevel: 'None',
-						entryPointPaths: 'Main.xaml'
+						entryPointPaths: 'Login.xaml'
 						)
 					}
 				}   
